@@ -261,6 +261,18 @@ if(CONFIG_GEN_UICR_SECONDARY)
   endif()
 endif()
 
+# Handle SNAPSHOT configuration
+set(snapshot_args)
+if(CONFIG_GEN_UICR_SNAPSHOT_REGIONS)
+  set(snapshot_region_idx 0)
+
+
+  while(DEFINED CONFIG_GEN_UICR_SNAPSHOT_REGION_${snapshot_region_idx}_ADDRESS)
+    list(APPEND snapshot_args --snapshot-region ${CONFIG_GEN_UICR_SNAPSHOT_REGION_${snapshot_region_idx}_ADDRESS} ${CONFIG_GEN_UICR_SNAPSHOT_REGION_${snapshot_region_idx}_SIZE_KB})
+    math(EXPR snapshot_region_idx "${snapshot_region_idx} + 1")
+  endwhile()
+endif()
+
 # Generate hex files (merged, uicr-only, periphconf-only, and secondary-periphconf-only)
 add_custom_command(
   OUTPUT ${merged_hex_file} ${uicr_hex_file} ${periphconf_hex_file} ${secondary_periphconf_hex_file}
@@ -279,6 +291,7 @@ add_custom_command(
           ${securestorage_args}
           ${protectedmem_args}
           ${secondary_args}
+          ${snapshot_args}
   DEPENDS ${periphconf_elfs} ${secondary_periphconf_elfs}
   WORKING_DIRECTORY ${APPLICATION_BINARY_DIR}
   COMMENT "Using gen_uicr.py to generate ${merged_hex_file}, ${uicr_hex_file}, ${periphconf_hex_file}, and ${secondary_periphconf_hex_file} from ${periphconf_elfs} ${secondary_periphconf_elfs}"

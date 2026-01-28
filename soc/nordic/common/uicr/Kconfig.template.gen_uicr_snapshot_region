@@ -1,0 +1,22 @@
+# Copyright (c) 2026 Nordic Semiconductor ASA
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+
+config GEN_UICR_SNAPSHOT_REGION_$(index)
+	bool "UICR.SNAPSHOT region"
+	depends on GEN_UICR_SNAPSHOT_REGIONS
+	help
+	  When enabled, configures a UICR.SNAPSHOT region.
+
+config GEN_UICR_SNAPSHOT_REGION_$(index)_ADDRESS
+	hex "UICR.SNAPSHOT region start address"
+	range 0x0e030000 0x0e1ff000
+	depends on GEN_UICR_SNAPSHOT_REGION_$(index)
+	help
+	  UICR.SNAPSHOT region start address. Must be aligned to a 4KB boundary.
+
+config GEN_UICR_SNAPSHOT_REGION_$(index)_SIZE_KB
+	int "UICR.SNAPSHOT region size in KB"
+	range 1 4095
+	depends on GEN_UICR_SNAPSHOT_REGION_$(index)
+	help
+	  UICR.SNAPSHOT region size in number of 1KB blocks.
