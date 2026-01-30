@@ -1,0 +1,28 @@
+# Copyright (c) 2024 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "SPI Flash Sample"
+
+config SPI_FLASH_SINGLE_SECTOR_TEST
+	bool "Single sector test"
+
+config SPI_FLASH_ERASE_TEST_REGION
+	bool "erase all test region info"
+
+config SPI_FLASH_EXMIF_TEST_REGION_OFFSET
+	hex "EXMIF test region start offset (bytes)"
+	#default 0xff000
+	default 0x0
+	help
+	  Start address of the flash region to test. Only non-erased bytes
+	  in this region will be printed. Set test size to 0 to disable.
+
+config SPI_FLASH_EXMIF_TEST_REGION_SIZE
+	hex "EXMIF test region size (bytes)"
+	default 0x90000
+	help
+	  Number of bytes to test from the region offset. If 0, the test
+	  is disabled. Erased value is 0xFF; only lines containing
+	  non-erased bytes are printed.
+
+source "Kconfig.zephyr"
